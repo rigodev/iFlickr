@@ -14,6 +14,8 @@ struct FlickrAPI {
     static let format: String = "&format=json&nojsoncallback=1"
     
     struct PhotoPaths {
+        static let photos: String = "photos"
+        static let photo: String = "photo"
         static let title: String = "title"
         static let thumbnailPath: String = "url_m"
         static let imagePath: String = "url_s"
