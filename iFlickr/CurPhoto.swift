@@ -21,7 +21,7 @@ class CurPhoto: UIViewController {
     
     private func loadPhoto() {
         if let loadedPhoto = self.photo {
-            DataProvider.shared().fetchPhotoImage(photoURL: loadedPhoto.imagePath!, saveLocal: true) { (image, error) in
+            DataProvider.shared().fetchPhotoImage(photoURL: loadedPhoto.imagePath!, useLocalStorage: true) { (image, error) in
                 if error == nil && image != nil {
                     DispatchQueue.main.async {
                         self.photoImageView.image = image

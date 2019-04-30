@@ -89,7 +89,7 @@ class PhotoList: UIViewController, UITableViewDelegate, UITableViewDataSource, U
         cell.spinnerActivity(true)
         
         if let thumbnailPath = photo?.thumbnailPath {
-            DataProvider.shared().fetchPhotoImage(photoURL: thumbnailPath, saveLocal: false) { (image, error) in
+            DataProvider.shared().fetchPhotoImage(photoURL: thumbnailPath, useLocalStorage: false) { (image, error) in
                 if error == nil && image != nil {
                     DispatchQueue.main.async {
                         cell.setThumbnail(image!)

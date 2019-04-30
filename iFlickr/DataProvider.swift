@@ -35,12 +35,14 @@ class DataProvider {
         dataTask.resume()
     }
     
-    func fetchPhotoImage(photoURL: String, saveLocal: Bool, completionHandler: @escaping (UIImage?, Error?) -> ()) {
-        if let photoName = URL(string: photoURL)?.lastPathComponent {
-            if let fileData = self.loadFileFromLocalStorage(fileName: photoName) {
-                completionHandler(UIImage(data: fileData), nil)
-                return
-            }
+    func fetchPhotoImage(photoURL: String, useLocalStorage: Bool, completionHandler: @escaping (UIImage?, Error?) -> ()) {
+        if useLocalStorage {
+            if let photoName = URL(string: photoURL)?.lastPathComponent {
+                if let fileData = self.loadFileFromLocalStorage(fileName: photoName) {
+                    completionHandler(UIImage(data: fileData), nil)
+                    return
+                }
+            }            
         }
         
         let session = URLSession.shared
@@ -52,7 +54,7 @@ class DataProvider {
                 return
             }
             
-            if saveLocal {
+            if useLocalStorage {
                 self.saveFileToLocalStorage(fileData: resultData!, fileName: (URL(string: photoURL)?.lastPathComponent)!)
             }
             
@@ -65,7 +67,10 @@ class DataProvider {
         do {
             let documentDirectoryURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let fileURL = documentDirectoryURL.appendingPathComponent(fileName)
-            let fileData = try Data(contentsOf: fileURL)
+            
+            guard let fileData: Data = try? Data(contentsOf: fileURL) else {
+                return nil
+            }
             return fileData
         } catch {
             print(error.localizedDescription)
